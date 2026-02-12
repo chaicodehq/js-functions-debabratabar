@@ -42,22 +42,56 @@
 export function createTiffinPlan({ name, mealType = "veg", days = 30 } = {}) {
   // Your code here
     let rateChart = { "veg" : 80 , "nonveg" : 120 , "jain" : 90 }
-    return ( mealType == null || name == null || name=='' ) ? null : { "name" : name , "mealType" : mealType , "days" : days , "dailyRate" : rateChart[mealType] ,  "totalCost" : rateChart[mealType] * days  }
+    return ( mealType == null || name == null || name=='' || (!(mealType in rateChart) )) ? null : { "name" : name , "mealType" : mealType , "days" : days , "dailyRate" : rateChart[mealType] ,  "totalCost" : rateChart[mealType] * days  }
 
 }
 
 export function combinePlans(...plans) {
   // Your code here
 
+  let getmeals = ( plan ) => { 
+    let res = {}
+    for ( let i = 0 ; i <plan.length ; i++){
+          if( plan[i].mealType in  res ){ 
+            res[plan[i].mealType] += 1
+          }
+          else{
+            res[plan[i].mealType]=1
+          }
+    }
+    return res
+  } 
 
-  return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( ( ,0) =>  )  }
+  return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( (accumulater , currentvalue) => (accumulater+ currentvalue.totalCost) , 0 ) ,
+    "mealBreakdown" : getmeals(plans[0])
+    }
 
 }
 
 export function applyAddons(plan, ...addons) {
   // Your code here
+
+  if ( plan == null) {
+    return null 
+  }
+
+  let new_plan = plan
+  let addonNames = addons
+
+  for ( const addon of addons){ 
+    new_plan.dailyRate+=addon.price
+  }
+
+  new_plan.totalCost = new_plan.dailyRate*plan.days
+
+  return {...new_plan , addonNames}
+
 }
 
+console.log(createTiffinPlan({ name: 'Test', mealType: 'keto' }))
 
 // console.log(createTiffinPlan({ name: 'Amit', mealType: 'nonveg', days: 15 }))
-console.log(combinePlans([{ name: 'Rahul', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 } , { name: 'Amit', mealType: 'nonveg', days: 15, dailyRate: 120, totalCost: 1800 }]))
+console.log(combinePlans([{ name: 'Rahul', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 } , { name: 'Amit', mealType: 'nonveg', days: 15, dailyRate: 120, totalCost: 1800 },{ name: 'Priya', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 }]))
+
+const basePlan = { name: 'Rahul', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 };
+ console.log(combinePlans(basePlan))
