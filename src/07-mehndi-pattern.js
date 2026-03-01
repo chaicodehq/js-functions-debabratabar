@@ -54,20 +54,81 @@
  */
 export function repeatChar(char, n) {
   // Your code here
+  if ( typeof char != 'string' || typeof n != 'number' ) { 
+         return ""
+  }
+
+  if ( n<=0){
+    return ""
+  }
+  return char + repeatChar(char , n-1)
 }
 
 export function sumNestedArray(arr) {
   // Your code here
+  if ( !Array.isArray(arr) || arr.length ==0 ) { 
+         return 0
+  }
+  
+  const [first ,...rest] =arr 
+  
+  if(Array.isArray(first)){
+    return sumNestedArray(first) + sumNestedArray(rest)
+  }
+
+  return (typeof first != "number" ? 0 : first) + sumNestedArray(rest)
+
 }
 
 export function flattenArray(arr) {
   // Your code here
+
+
+  if ( !Array.isArray(arr) ||arr.length ==0  ) { 
+         return []
+  }
+  const [first ,...rest] = arr 
+  
+  if(Array.isArray(first)){
+    return Array.of(...flattenArray(first) ,...flattenArray(rest)) 
+  }
+
+  return Array.of(first ,...flattenArray(rest))
 }
 
 export function isPalindrome(str) {
   // Your code here
+
+  // console.log(str)
+  
+  
+  if ( typeof str != 'string'  ) { 
+         return false
+  }
+  if (str.length ==0 ){
+    return true
+  }
+  str = str.toLowerCase()
+
+  return (str.at(0)=== str.at(str.length-1)) && isPalindrome(str.slice(1,str.length-1))
+
 }
 
 export function generatePattern(n) {
   // Your code here
+
+  if ( n <=0 || typeof n != 'number'){
+    return []
+  } 
+
+
+  return Array.of( "*".repeat(n) , generatePattern(n-1) , )
+
+  
 }
+
+
+
+// console.log(repeatChar('ay' , 5))
+// console.log(flattenArray([1, [2, [3, 4]], 5]));
+// console.log(isPalindrome('maddaam'))

@@ -46,12 +46,96 @@
  */
 export function createDialogueWriter(genre) {
   // Your code here
+
+  return (genre == null || genre == undefined || ['action' , 'romance' , 'comedy' , 'drama'].indexOf(genre) ==-1 )?  null    :
+  ( 
+    (hero,villain) => { 
+      if( hero == null || villain == null ||  hero=='' || villain=='' || hero == undefined || villain == undefined){
+        return '...'
+      }
+
+
+      let msg =''
+
+      if ( genre == 'action'){
+             msg =`${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
+      }else if ( genre == 'romance'){ 
+             msg =`${hero} whispers: '${villain}, tum mere liye sab kuch ho'`
+      }else if(  genre == 'comedy' ){
+             msg =`${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`
+
+      }else{ 
+             msg =`${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+
+      }
+      return msg 
+    }
+
+   
+  )
+
+
 }
 
 export function createTicketPricer(basePrice) {
   // Your code here
+
+  
+  return (basePrice <=0 )?  null    :
+  ( 
+    (seatType, isWeekend = false) => { 
+      if( ['silver' , 'gold' , 'platinum'].indexOf(seatType) ==-1 ){
+        return null 
+      }
+
+
+      let actualPrice =basePrice;
+
+      if ( seatType == 'gold'){
+             actualPrice *=1.5
+      }else if ( seatType == 'platinum'){ 
+                          actualPrice *=2
+      }else{ 
+             
+      }
+
+      if (isWeekend){
+        actualPrice*=1.3
+      }
+      return Math.round(actualPrice)
+    }
+  )
+
 }
 
 export function createRatingCalculator(weights) {
   // Your code here
+     
+  return (weights == null || typeof weights != 'object' )?  null    :
+  ( 
+    (scores) => { 
+
+      let weightsEntry = Object.entries(weights)
+      let sum = 0 
+      for ( let [name , weight] of weightsEntry){
+          sum+= weight * scores[name]
+      }
+
+      // console.log(sum)
+
+      // sum /= weightsEntry.length
+
+      
+      return parseFloat( sum.toFixed(1))
+    }
+  )
+
 }
+
+
+
+//  const weights = { story: 0.3, acting: 0.3, direction: 0.2, music: 0.2 };
+//       const calc = createRatingCalculator(weights);
+//       const scores = { story: 8, acting: 9, direction: 7, music: 8 };
+
+//       console.log(calc(scores))

@@ -50,4 +50,77 @@
  */
 export function createDabbawala(name, area) {
   // Your code here
+  let id = 1 
+  let delivery =[]
+
+  const addDelivery = function addDelivery(from , to) { 
+
+    const idMain = id 
+    id+=1
+
+    delivery.push({ id:idMain , from: from , to: to , status : 'pending'})
+
+     return ( from == null || to ==null || from == undefined || to == undefined || from == '' || to =='' ) ? -1 :  idMain
+    //  
+
+  }
+
+  const completeDelivery = function completeDelivery(id) { 
+
+    for (let ele of delivery ){ 
+          if( ele.id == id && ele.status == 'pending'){
+            ele.status= 'completed'
+            return true
+          }
+          
+    }
+
+    return false
+
+  }
+
+  const getActiveDeliveries = function getActiveDeliveries() { 
+
+    let res = []
+
+    return  delivery.filter( (ele) =>  ele.status == 'pending') 
+
+
+  }
+
+  const getStats  = function getStats(){ 
+
+    let completed =  delivery.filter( (e) => e.status == 'completed').reduce((sum , e)=> ( sum+1) , 0 )
+    let pending = delivery.length - completed 
+    let successRate =  (100.00*completed/delivery.length) 
+
+    // console.log(completed)
+    // console.log(delivery.length)
+
+
+    return { name:name , area :area , total: delivery.length ,  completed : completed , pending : pending , successRate : (isNaN(successRate)) ? '0.00%' : `${successRate.toFixed(2)}%`}
+  }
+
+  const reset = function reset() { 
+
+    delivery = []
+    id = 1
+    return true
+
+  }
+
+  const res = { addDelivery, completeDelivery  , getActiveDeliveries , getStats , reset}
+
+  return  res 
 }
+
+
+
+
+const ram = createDabbawala("Ram", "Dadar");
+// console.log(ram.addDelivery("Andheri", "Churchgate") ) ; // => 1
+// console.log(ram.addDelivery("Bandra", "CST") ) ;         // => 2
+// console.log(ram.addDelivery("Bandra", "CST") ) ;         // => 2
+// ram.completeDelivery(1);                   // => true
+console.log(ram.getStats() ); 
+// => { name: "Ram", area: "Dadar", total: 2, completed: 1, pending: 1, successRate: "50.00%" }

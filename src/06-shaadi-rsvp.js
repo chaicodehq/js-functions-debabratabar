@@ -47,16 +47,41 @@
  */
 export function processGuests(guests, filterFn) {
   // Your code here
+
+  return ( !Array.isArray(guests) || typeof filterFn != 'function' ) ? [] : guests.filter((e) => filterFn(e))
+ 
 }
 
 export function notifyGuests(guests, notifyCallback) {
   // Your code here
+  // console.log(guests)
+  return ( !Array.isArray(guests) || typeof notifyCallback != 'function' ) ? [] : guests.reduce((accmulator , currentValua ) =>  { return  accmulator.concat(notifyCallback(currentValua)) }  , [])
+
 }
 
 export function handleRSVP(guest, onAccept, onDecline) {
   // Your code here
+
+  return ( guest == null || guest == undefined || typeof onAccept != 'function' || typeof onDecline != 'function') ?  null : 
+  ( ['yes' , 'no'].indexOf(guest.rsvp) == -1 ) ? null : ( guest.rsvp == 'yes') ? onAccept(guest) : onDecline(guest)
+
 }
 
 export function transformGuestList(guests, ...transformFns) {
   // Your code here
+
+  return  ( !Array.isArray(guests) ) ? [] : transformFns.reduce((acc , currVal) => ( currVal(acc)) , guests)
+
 }
+
+const guests = [
+    { name: 'Rahul', side: 'bride', rsvp: 'yes' },
+    { name: 'Priya', side: 'groom', rsvp: 'no' },
+    { name: 'Amit', side: 'bride', rsvp: 'yes' },
+    { name: 'Neha', side: 'groom', rsvp: 'yes' },
+    { name: 'Vikram', side: 'bride', rsvp: 'no' },
+  ];
+const filterBride = (arr) => arr.filter((g) => g.side === 'bride');
+      const getNames = (arr) => arr.map((g) => g.name);
+      const result = transformGuestList('abc', filterBride, getNames);
+      console.log(result)
