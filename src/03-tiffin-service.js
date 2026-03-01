@@ -62,12 +62,10 @@ export function combinePlans(...plans) {
     return res
   } 
 
-  return -1
 
-  // return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( (accumulater , currentvalue) => (accumulater+ currentvalue.totalCost) , 0 ) ,
-  //   "mealBreakdown" : getmeals(plans[0])
-  //   }
-
+  return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( (accumulater , currentvalue) => (accumulater+ currentvalue.totalCost) , 0 ) ,
+    "mealBreakdown" : getmeals(plans[0])
+    }
 }
 
 export function applyAddons(plan, ...addons) {
