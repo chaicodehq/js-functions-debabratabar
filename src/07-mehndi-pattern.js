@@ -117,14 +117,21 @@ export function isPalindrome(str) {
 export function generatePattern(n) {
   // Your code here
 
-  if ( n <=0 || typeof n != 'number'){
+  if (  typeof n != 'number' ||n <=0 || n-Math.trunc(n) >0){
     return []
   } 
-
-
-  return Array.of( "*".repeat(n) , generatePattern(n-1) , )
-
   
+  // Helper function to build ascending pattern (1 to n stars)
+  function buildAscending(i) {
+    if (i === 0) return []
+    return [...buildAscending(i - 1), "*".repeat(i)]
+  }
+  
+  // Build ascending and descending parts
+  const ascending = buildAscending(n)
+  const descending = ascending.slice(0, -1).reverse() // Remove peak, reverse
+  
+  return [...ascending, ...descending]
 }
 
 
@@ -132,3 +139,5 @@ export function generatePattern(n) {
 // console.log(repeatChar('ay' , 5))
 // console.log(flattenArray([1, [2, [3, 4]], 5]));
 // console.log(isPalindrome('maddaam'))
+
+console.log(generatePattern(3))

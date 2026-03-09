@@ -39,7 +39,7 @@
  *   combinePlans(plan1, plan2, plan3)
  *   // => { totalCustomers: 3, totalRevenue: 7200, mealBreakdown: { veg: 2, nonveg: 1 } }
  */
-export function createTiffinPlan({ name, mealType = "veg", days = 30 } = {}) {
+export function createTiffinPlan({ name, mealType = "veg", days = 30 } ) {
   // Your code here
     let rateChart = { "veg" : 80 , "nonveg" : 120 , "jain" : 90 }
     return ( mealType == null || name == null || name=='' || (!(mealType in rateChart) )) ? null : { "name" : name , "mealType" : mealType , "days" : days , "dailyRate" : rateChart[mealType] ,  "totalCost" : rateChart[mealType] * days  }
@@ -63,9 +63,9 @@ export function combinePlans(...plans) {
   } 
 
 
-  return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( (accumulater , currentvalue) => (accumulater+ currentvalue.totalCost) , 0 ) ,
-    "mealBreakdown" : getmeals(plans[0])
-    }
+  // return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( (accumulater , currentvalue) => (accumulater+ currentvalue.totalCost) , 0 ) ,
+  //   "mealBreakdown" : getmeals(plans[0])
+  //   }
 }
 
 export function applyAddons(plan, ...addons) {

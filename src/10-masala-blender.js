@@ -54,6 +54,16 @@
  */
 export function pipe(...fns) {
   // Your code here
+
+  function res(x){
+    if ( fns == undefined || fns == null ){
+     return  x
+  }
+    return  fns.reduce((acc , ele) => ele(acc) , (x) =>x) 
+  } 
+
+
+  return res
 }
 
 export function compose(...fns) {
@@ -62,18 +72,22 @@ export function compose(...fns) {
 
 export function grind(spice) {
   // Your code here
+  return { ...spice, form: "powder" }
 }
 
 export function roast(spice) {
   // Your code here
+  return  { ...spice, roasted: true, aroma: "strong" }
 }
 
 export function mix(spice) {
   // Your code here
+  return   { ...spice, mixed: true }
 }
 
 export function pack(spice) {
   // Your code here
+  return { ...spice, packed: true, label: `${spice.name} Masala` }
 }
 
 export function createRecipe(steps) {
