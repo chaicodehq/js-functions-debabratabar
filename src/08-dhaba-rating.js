@@ -46,16 +46,95 @@
  */
 export function createFilter(field, operator, value) {
   // Your code here
+
+    let res = undefined
+    
+      
+      if ( operator=='>' ){
+         res =  (ele) => ele[field] > value
+        // console.log(operator);
+        
+      }
+      else if (operator=='<' ){
+         res =  (ele) =>  ele[field] < value
+        // console.log(operator);
+
+      }
+       else if (operator=='<=' ){
+         res =  (ele) =>  ele[field] <= value
+      }
+       else if (operator=='>=' ){
+        res =  (ele) => ele[field] >= value
+      }
+       else if (operator=='===' ){
+         res =  (ele) =>  ele[field] === value
+      }
+      else{
+         res =  (ele) => (false )
+      }
+
+      return res 
+
 }
 
 export function createSorter(field, order = "asc") {
   // Your code here
+  return function ( a , b) {
+    if ( typeof a[field] =='number' ) {
+      if ( order == 'asc' ) { return a[field] - b[field] }
+      else if ( order == 'desc') { return b[field] - a[field] }
+    } 
+
+    if ( typeof a[field] == 'string'){
+      if ( order == 'asc' ) { return a[field].localeCompare(b[field]) }
+      else if ( order == 'desc') { return b[field].localeCompare(a[field]) }
+    }
+  }
 }
 
 export function createMapper(fields) {
   // Your code here
+
+  return function(obj1) { 
+      let res = {}
+
+      fields.forEach((ele) => {
+        res[ele] = obj1[ele]
+      })
+
+      return res 
+  }
+
+
 }
 
 export function applyOperations(data, ...operations) {
   // Your code here
+
+  if ( !Array.isArray(data)){ return [] }
+
+  return operations.reduce( (acc , currEle) => acc = currEle(acc), data)
+
+  
 }
+
+
+
+
+
+// const dhabas = [
+//     { name: 'Punjab Dhaba', rating: 4.5, price: 200, city: 'Delhi' },
+//     { name: 'Sharma Ji', rating: 3.8, price: 150, city: 'Jaipur' },
+//     { name: 'Highway King', rating: 4.0, price: 300, city: 'Delhi' },
+//     { name: 'Truck Stop', rating: 3.2, price: 100, city: 'Agra' },
+//   ];
+
+
+
+//   const highRated = createFilter('rating', '>=', 4);
+//   console.log(highRated);
+  
+//   const result = dhabas.filter(highRated);
+
+//   console.log(result);
+  
