@@ -39,28 +39,38 @@
  *   combinePlans(plan1, plan2, plan3)
  *   // => { totalCustomers: 3, totalRevenue: 7200, mealBreakdown: { veg: 2, nonveg: 1 } }
  */
-export function createTiffinPlan({ name, mealType = "veg", days = 30 } ) {
+export function createTiffinPlan({ name, mealType = "veg", days = 30 }={} ) {
   // Your code here
+
+     if ( arguments.length==0){
+      return null 
+     }
     let rateChart = { "veg" : 80 , "nonveg" : 120 , "jain" : 90 }
-    return ( mealType == null || name == null || name=='' || (!(mealType in rateChart) )) ? null : { "name" : name , "mealType" : mealType , "days" : days , "dailyRate" : rateChart[mealType] ,  "totalCost" : rateChart[mealType] * days  }
+    return ( name == undefined ||  mealType == null || name == null || name=='' || (!(mealType in rateChart) )) ? null : { "name" : name , "mealType" : mealType , "days" : days , "dailyRate" : rateChart[mealType] ,  "totalCost" : rateChart[mealType] * days  }
 
 }
 
 export function combinePlans(...plans) {
   // Your code here
+        if ( plans == undefined || plans.length==0) {
+          return null 
+        } 
 
-  let getmeals = ( plan ) => { 
-    let res = {}
-    for ( let i = 0 ; i <plan.length ; i++){
-          if( plan[i].mealType in  res ){ 
-            res[plan[i].mealType] += 1
+        const result = { totalCustomers : 0, totalRevenue:0, mealBreakdown:{} }
+
+        plans.forEach((ele) => { 
+          result.totalCustomers +=1 
+          result.totalRevenue += (ele.dailyRate*ele.days) 
+          if ( !result.mealBreakdown[ele.mealType]){
+            result.mealBreakdown[ele.mealType]=1
           }
           else{
-            res[plan[i].mealType]=1
+            result.mealBreakdown[ele.mealType]+=1
           }
-    }
-    return res
-  } 
+        })
+
+            return result
+   
 
 
   // return ( plans == null || plans.length==0) ? null : { "totalCustomers" : plans[0].length , "totalRevenue" : plans[0].reduce( (accumulater , currentvalue) => (accumulater+ currentvalue.totalCost) , 0 ) ,
@@ -75,23 +85,21 @@ export function applyAddons(plan, ...addons) {
     return null 
   }
 
-  let new_plan = plan
-  let addonNames = addons
+  let planWithAddon = {...plan}
 
-  for ( const addon of addons){ 
-    new_plan.dailyRate+=addon.price
-  }
 
-  new_plan.totalCost = new_plan.dailyRate*plan.days
+  addons.forEach((ele) => { 
+      planWithAddon.dailyRate+=ele.price
+  } )
 
-  return {...new_plan , addonNames}
+  planWithAddon.totalCost = (planWithAddon.dailyRate*planWithAddon.days)
+
+  console.log(addons);
+  
+
+  return {...planWithAddon , addonNames : addons.map((ele) => ele.name)}
 
 }
 
-console.log(createTiffinPlan({ name: 'Test', mealType: 'keto' }))
 
-// console.log(createTiffinPlan({ name: 'Amit', mealType: 'nonveg', days: 15 }))
-console.log(combinePlans([{ name: 'Rahul', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 } , { name: 'Amit', mealType: 'nonveg', days: 15, dailyRate: 120, totalCost: 1800 },{ name: 'Priya', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 }]))
-
-const basePlan = { name: 'Rahul', mealType: 'veg', days: 30, dailyRate: 80, totalCost: 2400 };
- console.log(combinePlans(basePlan))
+console.log(createTiffinPlan())

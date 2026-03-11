@@ -55,20 +55,86 @@
  */
 export function mixColors(color1, color2) {
   // Your code here
+
+  if ( color1 == undefined || color1 == null ){
+    return null 
+  }
+
+  if ( color2 == undefined || color2 == null ){
+    return null 
+  }
+
+    return { name : `${color1.name}-${color2.name}` , r : Math.round( (color1.r+color2.r) / 2 ) , g :  Math.round( (color1.g+color2.g) / 2 ) , b :  Math.round( (color1.b+color2.b) / 2 )  }
 }
 
 export function adjustBrightness(color, factor) {
   // Your code here
+
+  if ( color == undefined || color == null || factor ==undefined || typeof factor != 'number' ){
+    return null 
+  }
+
+  return { name : color.name , r: ( (color.r * factor) > 255   ) ? 255   :  (color.r * factor), g: ( (color.g * factor) > 255   ) ? 255   :  (color.g * factor) , b : ( (color.g * factor) > 255   ) ? 255   :  (color.g * factor) }
 }
 
 export function addToPalette(palette, color) {
   // Your code here
+  if ( !Array.isArray(palette)){
+    return [color]
+  }
+  if ( color == undefined || color == null ){
+    return [...palette]
+  }
+
+  return [...palette , color ]
 }
 
 export function removeFromPalette(palette, colorName) {
   // Your code here
+if ( !Array.isArray(palette)){
+    return []
+  }
+
+  return palette.filter( (ele) => ele.name != colorName)
+
 }
 
 export function mergePalettes(palette1, palette2) {
   // Your code here
+
+  if ( !Array.isArray(palette1) && !Array.isArray(palette2) ){
+    return []
+  }
+
+  const res = []
+
+  if ( palette1 != null ){
+  palette1.forEach( (ele) => { 
+    if (res.filter((item)=> item.name == ele.name ).length ==0){
+      res.push(ele)
+    }
+  })
+
 }
+
+
+if( palette2 != null ){
+
+   palette2.forEach( (ele) => { 
+    if (res.filter((item)=> item.name == ele.name ).length ==0){
+      res.push(ele)
+    }
+  })
+}
+  return res
+}
+
+
+const red = () => ({ name: 'red', r: 255, g: 0, b: 0 });
+  const blue = () => ({ name: 'blue', r: 0, g: 0, b: 255 });
+  const green = () => ({ name: 'green', r: 0, g: 255, b: 0 });
+  const gray = () => ({ name: 'gray', r: 100, g: 100, b: 100 });
+
+
+console.log(mixColors(red(), blue()))
+

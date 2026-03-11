@@ -1,20 +1,9 @@
-let arr1 = [1,2,3]
-let arr2 = [...arr1] 
+function fns1({name}){
 
-
-arr1.push(4)
-
-console.log(arr2.slice(4));
-
-
-function add(...data){
-  console.log(data);
-  
+  if (name != undefined){
+  console.log(name);
+  }
 }
 
 
-
-add(1,2,3,4,5)
-
-
-console.log(arr1.slice(1));
+fns1()

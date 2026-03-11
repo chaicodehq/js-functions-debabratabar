@@ -59,7 +59,7 @@ export function pipe(...fns) {
     if ( fns == undefined || fns == null ){
      return  x
   }
-    return  fns.reduce((acc , ele) => ele(acc) , (x) =>x) 
+    return  fns.reduce((acc , ele) => acc = ele(acc) , x) 
   } 
 
 
@@ -68,10 +68,23 @@ export function pipe(...fns) {
 
 export function compose(...fns) {
   // Your code here
+
+  
+  function res(x){
+    if ( fns == undefined || fns == null ){
+     return  x
+  }
+    return  fns.reverse().reduce((acc , ele) => acc = ele(acc) , x) 
+  } 
+
+
+  return res
 }
 
 export function grind(spice) {
   // Your code here
+  // console.log(spice);
+  
   return { ...spice, form: "powder" }
 }
 
@@ -92,4 +105,27 @@ export function pack(spice) {
 
 export function createRecipe(steps) {
   // Your code here
+
+  if ( !Array.isArray(steps ) || steps.length==0){
+    return (x) => (x)
+  }
+
+
+  const stepFunctions = steps.map((ele) =>{
+    if ( ele == 'grind') { return  grind; } 
+    else if ( ele == 'roast') { return   roast; } 
+    else if ( ele == 'mix') { return   mix; } 
+    else if ( ele == 'pack') {  return  pack; } 
+    else { return (x) => (x) }
+  })
+
+  console.log(stepFunctions);
+  
+  
+
+  return pipe(...stepFunctions)
 }
+
+ const res = createRecipe(['grind','ab', 'roast', 'pack'])
+
+console.log(res({ name: 'Haldi' }));
